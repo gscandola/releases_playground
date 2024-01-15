@@ -1,0 +1,29 @@
+name: Release Drafter
+
+on:
+    # Trigger the workflow on merge on main to create / update the release draft
+    push:
+        branches:
+            - main
+    # Trigger the workflow on pull request to autolabelize Pull Requests
+    # Will not update the draft, only the PR labels
+    pull_request:
+        types: [opened, reopened, synchronize]
+        branches-ignore:
+            - 'renovate/**'
+
+permissions:
+    contents: read
+
+jobs:
+    update_release_draft:
+        permissions:
+            contents: write
+            pull-requests: write
+        runs-on: ubuntu-latest
+        steps:
+            - uses: release-drafter/release-drafter@v5
+              with:
+                  commitish: main
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
