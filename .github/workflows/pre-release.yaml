@@ -1,3 +1,8 @@
+# This action runs when a a release (pre-release or final release) is published from Github
+# BUT, is filtered to only handle "prerelease"
+# Goal is to trigger CircleCI pipeline to build & deploy on PREVIEW
+name: CircleCITrigger/PreRelease
+
 on:
     release:
         types: [published]
@@ -12,4 +17,4 @@ jobs:
               with:
                   GHA_Meta: 'pre-release'
               env:
-                  CCI_TOKEN: ${{ secrets.CCI_TOKEN_HUBBLE }}
+                  CCI_TOKEN: ${{ secrets.CCI_TOKEN }}

@@ -1,16 +1,12 @@
-name: Pre-Release Drafter
+# This action runs when a merge on main is detected
+# Goal is to run release-drafter action to create a PRE-RELEASE
+name: ReleaseDrafter/PreRelease
 
 on:
     # Trigger the workflow on merge on main to create / update the release draft
     push:
         branches:
             - main
-    # Trigger the workflow on pull request to autolabelize Pull Requests
-    # Will not update the draft, only the PR labels
-    pull_request:
-        types: [opened, reopened, synchronize]
-        branches-ignore:
-            - 'renovate/**'
 
 permissions:
     contents: read
@@ -19,7 +15,6 @@ jobs:
     update_release_draft:
         permissions:
             contents: write
-            pull-requests: write
         runs-on: ubuntu-latest
         steps:
             - uses: release-drafter/release-drafter@v5
