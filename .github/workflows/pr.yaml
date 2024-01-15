@@ -1,3 +1,5 @@
+name: CircleCI Trigger PR Checks
+
 on:
     pull_request:
         types: [opened, synchronize]

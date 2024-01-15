@@ -1,3 +1,5 @@
+name: CircleCI Trigger PreRelease
+
 on:
     release:
         types: [published]

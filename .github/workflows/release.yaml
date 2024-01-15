@@ -1,3 +1,5 @@
+name: CircleCI Trigger Final Release
+
 on:
     release:
         types: [published]
