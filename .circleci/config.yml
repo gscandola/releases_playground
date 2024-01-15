@@ -118,12 +118,15 @@ workflows:
                   <<: *tagged
                   requires:
                       - build-preview
-            - request-approval:
+            - request-qa-approval:
                   type: approval
                   <<: *tagged
                   requires:
                       - deploy-preview
-            - trigger-final-release
+            - trigger-final-release:
+                  <<: *tagged
+                  requires:
+                      - request-qa-approval
     build_deploy_live:
         when:
             and:
