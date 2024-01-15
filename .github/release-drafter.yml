@@ -2,7 +2,7 @@ name-template: 'v$RESOLVED_VERSION'
 tag-template: 'v$RESOLVED_VERSION'
 tag-prefix: 'v'
 prerelease: true
-latest: false
+# latest: false
 categories:
     - title: Breaking Changes ⚠
       label: 'breaking-change'
