@@ -1,4 +1,6 @@
-name: Pre-Release Drafter
+# This action runs when a merge on main is detected
+# Goal is to run release-drafter action to create a PRE-RELEASE
+name: ReleaseDrafter/PreRelease
 
 on:
     # Trigger the workflow on merge on main to create / update the release draft

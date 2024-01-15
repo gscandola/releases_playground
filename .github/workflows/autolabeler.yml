@@ -1,4 +1,6 @@
-name: Autolabeler
+# This action runs when a Pull Request is opened or synchronized
+# Goal is to run release-drafter to automatically assign the right labels
+name: ReleaseDrafter/Autolabeler
 
 on:
     # Trigger the workflow on pull request to autolabelize Pull Requests

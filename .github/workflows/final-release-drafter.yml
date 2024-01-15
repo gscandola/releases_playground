@@ -1,4 +1,6 @@
-name: Final Release Drafter
+# This action runs when a Repository Dispatch is detected (trigger FROM CircleCI)
+# Goal is to run release-drafter action to create a RELEASE (a final one)
+name: ReleaseDrafter/Release
 
 on:
     repository_dispatch:

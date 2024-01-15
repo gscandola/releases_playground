@@ -1,4 +1,6 @@
-name: CircleCI Trigger PR Checks
+# This action runs when a Pull Request is opened or synchronized
+# Goal is to trigger CircleCI pipeline to run quality check & deploy on ephemeral env
+name: CircleCITrigger/PullRequest
 
 on:
     pull_request:
