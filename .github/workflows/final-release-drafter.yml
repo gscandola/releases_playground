@@ -19,5 +19,6 @@ jobs:
                   commitish: main
                   prerelease: false
                   include-pre-releases: true
+                  disable-autolabeler: true
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
