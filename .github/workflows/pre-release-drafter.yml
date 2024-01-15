@@ -1,4 +1,4 @@
-name: Release Drafter
+name: Pre-Release Drafter
 
 on:
     # Trigger the workflow on merge on main to create / update the release draft
