@@ -1,0 +1,139 @@
+version: 2.1
+
+# --------------- Parameters (from Github Actions) ---------------
+parameters:
+    GHA_Actor:
+        type: string
+        default: ''
+    GHA_Action:
+        type: string
+        default: ''
+    GHA_Event:
+        type: string
+        default: ''
+    GHA_Meta:
+        type: string
+        default: ''
+
+# --------------- Alias ---------------
+default_docker: &default_docker
+    - image: cimg/aws:2023.12
+
+tagged: &tagged
+    filters:
+        tags:
+            only: /v.*/
+
+# --------------- Commands ---------------
+commands:
+
+    setup:
+        description: 'Setup project'
+        steps:
+            - checkout
+
+    build:
+        description: 'Build the appplication'
+        parameters:
+            target_env:
+                type: string
+        steps:
+            - setup
+            - run:
+                  name: Build
+                  command: |
+                      echo "Built << parameters.target_env >> !"
+    deploy:
+        parameters:
+            target_env:
+                type: string
+        steps:
+            - run:
+                  name: Deploy
+                  command: |
+                      echo "Deployed << parameters.target_env >> !"
+
+# --------------- Jobs ---------------
+jobs:
+    test:
+        docker: *default_docker
+        resource_class: small
+        steps:
+            - run:
+                  name: Run tests
+                  command: echo "Tests succeed"
+    build-preview:
+        docker: *default_docker
+        resource_class: small
+        steps:
+            - build:
+                target_env: 'preview'
+
+    deploy-preview:
+        docker: *default_docker
+        resource_class: small
+        steps:
+            - deploy:
+                target_env: 'preview'
+
+    build-live:
+        docker: *default_docker
+        resource_class: small
+        steps:
+            - build:
+                target_env: 'live'
+
+    deploy-live:
+        docker: *default_docker
+        resource_class: small
+        steps:
+            - deploy:
+                target_env: 'live'
+
+    trigger-final-release:
+        docker: *default_docker
+        resource_class: small
+        steps:
+            - run:
+                  name: Trigger final release draft creation
+                  command: |
+                    curl -X POST -H "Content-Type:application/json" -H "Accept:application/vnd.github.v3+json" -H "Authorization: token $GITHUB_TOKEN" -d '{"event_type":"pre_release_approved"}' "https://api.github.com/repos/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}/dispatches"
+
+# --------------- Jobs ---------------
+workflows:
+    pr_ci:
+        when:
+            equal: ['pull_request', << pipeline.parameters.GHA_Event >>]
+        jobs:
+            - test
+    build_deploy_preview:
+        when:
+            and:
+                - equal: ['release', << pipeline.parameters.GHA_Event >>]
+                - equal: ['pre-release', << pipeline.parameters.GHA_Meta >>]
+        jobs:
+            - build-preview:
+                  <<: *tagged
+            - deploy-preview:
+                  <<: *tagged
+                  requires:
+                      - build-preview
+            - request-approval:
+                  type: approval
+                  <<: *tagged
+                  requires:
+                      - deploy-preview
+            - trigger-final-release
+    build_deploy_live:
+        when:
+            and:
+                - equal: ['release', << pipeline.parameters.GHA_Event >>]
+                - equal: ['final-release', << pipeline.parameters.GHA_Meta >>]
+        jobs:
+            - build-live:
+                  <<: *tagged
+            - deploy-live:
+                  <<: *tagged
+                  requires:
+                      - build-live
+

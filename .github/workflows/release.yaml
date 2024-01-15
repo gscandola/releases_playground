@@ -1,0 +1,15 @@
+on:
+    release:
+        types: [published]
+jobs:
+    trigger-circleci:
+        if: "!github.event.release.prerelease"
+        runs-on: ubuntu-latest
+        steps:
+            - name: Release
+              id: release
+              uses: CircleCI-Public/trigger-circleci-pipeline-action@v1.1.0
+              with:
+                  GHA_Meta: 'final-release'
+              env:
+                  CCI_TOKEN: ${{ secrets.CCI_TOKEN_HUBBLE }}
