@@ -12,4 +12,4 @@ jobs:
               with:
                   GHA_Meta: 'pre-release'
               env:
-                  CCI_TOKEN: ${{ secrets.CCI_TOKEN_HUBBLE }}
+                  CCI_TOKEN: ${{ secrets.CCI_TOKEN }}
