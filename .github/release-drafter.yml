@@ -1,7 +1,7 @@
 name-template: 'v$RESOLVED_VERSION'
 tag-template: 'v$RESOLVED_VERSION'
 tag-prefix: 'v'
-prerelease: true
+# prerelease: true
 prerelease-identifier: 'pre'
 # latest: false
 categories:
