@@ -26,11 +26,32 @@ tagged: &tagged
 
 # --------------- Commands ---------------
 commands:
+    install_pnpm:
+        description: 'Setup pnpm based on engine'
+        steps:
+            - run:
+                name: Setup pnpm
+                command: |
+                    # Circle CI run these command from root directory of the project
+                    # Use node to extract packageManager indicated in package.json
+                    PKG_MANAGER="$(node -p "require('./package.json').packageManager")"
+
+                    # Globally install the right package manager version
+                    npm install -g "$PKG_MANAGER"
+
+    install_dependencies:
+        description: 'Dependencies installation'
+        steps:
+            - run:
+                name: 'Installing dependencies'
+                command: pnpm install
 
     setup:
         description: 'Setup project'
         steps:
             - checkout
+            - install_pnpm
+            - install_dependencies
 
     build:
         description: 'Build the appplication'
@@ -95,9 +116,9 @@ jobs:
         resource_class: small
         steps:
             - run:
-                  name: Trigger final release draft creation
+                  name: Trigger final release creation
                   command: |
-                    curl -X POST -H "Content-Type:application/json" -H "Accept:application/vnd.github.v3+json" -H "Authorization: token $GITHUB_TOKEN" -d '{"event_type":"pre_release_approved"}' "https://api.github.com/repos/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}/dispatches"
+                    node ./.circleci/scripts/createFinalRelease.mjs
 
 # --------------- Jobs ---------------
 workflows:
