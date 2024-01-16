@@ -34,21 +34,19 @@ if (drafts.length) {
 const preReleases = data.filter((release) => release.prerelease);
 
 console.log(`${preReleases.length} pre-release(s) found, removing them...`);
-(async function () {
-  await Promise.all(
-    preReleases.forEach(async (preRelease) => {
-      await octokit.rest.repos.deleteRelease({
-        ...repoInfos,
-        release_id: preRelease.id,
-      });
-      await octokit.rest.git.deleteRef({
-        ...repoInfos,
-        ref: `tags/${preRelease.tag_name}`,
-      });
-      console.log(`${preRelease.tag_name} release & tag deleted`);
-    })
-  );
-})();
+await Promise.all(
+  preReleases.map(async (preRelease) => {
+    await octokit.rest.repos.deleteRelease({
+      ...repoInfos,
+      release_id: preRelease.id,
+    });
+    await octokit.rest.git.deleteRef({
+      ...repoInfos,
+      ref: `tags/${preRelease.tag_name}`,
+    });
+    console.log(`${preRelease.tag_name} release & tag deleted`);
+  })
+);
 console.log("Pre-release(s) deleted.");
 
 preReleases.forEach(async (preRelease) => {});
