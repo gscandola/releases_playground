@@ -118,8 +118,7 @@ workflows:
     build_deploy_preview:
         when:
             and:
-                - equal: ['release', << pipeline.parameters.GHA_Action >>]
-                - equal: ['pre-release', << pipeline.parameters.GHA_Meta >>]
+                - equal: ['pre-release', << pipeline.parameters.GHA_Action >>]
         jobs:
             - build-preview:
                   <<: *tagged
@@ -140,7 +139,6 @@ workflows:
         when:
             and:
                 - equal: ['release', << pipeline.parameters.GHA_Action >>]
-                - equal: ['final-release', << pipeline.parameters.GHA_Meta >>]
         jobs:
             - build-live:
                   <<: *tagged
