@@ -31,6 +31,6 @@ jobs:
         steps:
             - id: release
               uses: CircleCI-Public/trigger-circleci-pipeline-action@v1.1.0
-              need: update-release-draft
+              needs: update-release-draft
               env:
                 CCI_TOKEN: ${{ secrets.CCI_TOKEN }}
