@@ -19,9 +19,9 @@ jobs:
             pull-requests: read
         runs-on: ubuntu-latest
         steps:
-              uses: release-drafter/release-drafter@v5
+            - uses: release-drafter/release-drafter@v5
               with:
-                  commitish: main
-                  prerelease: true
+                commitish: main
+                prerelease: true
               env:
-                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -13,4 +13,4 @@ jobs:
             - id: pr
               uses: CircleCI-Public/trigger-circleci-pipeline-action@v1.1.0
               env:
-                  CCI_TOKEN: ${{ secrets.CCI_TOKEN }}
+                CCI_TOKEN: ${{ secrets.CCI_TOKEN }}

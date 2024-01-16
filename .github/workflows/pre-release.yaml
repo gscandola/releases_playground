@@ -12,9 +12,9 @@ jobs:
         if: "github.event.release.prerelease"
         runs-on: ubuntu-latest
         steps:
-            id: pre-release
-            uses: CircleCI-Public/trigger-circleci-pipeline-action@v1.1.0
-            with:
+            - id: pre-release
+              uses: CircleCI-Public/trigger-circleci-pipeline-action@v1.1.0
+              with:
                 GHA_Meta: 'pre-release'
-            env:
+              env:
                 CCI_TOKEN: ${{ secrets.CCI_TOKEN }}
