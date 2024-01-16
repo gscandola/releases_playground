@@ -26,11 +26,11 @@ jobs:
               env:
                 GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     trigger-circleci:
+        needs: update-release-draft
         name: Trigger CircleCI for Release
         runs-on: ubuntu-latest
         steps:
             - id: release
               uses: CircleCI-Public/trigger-circleci-pipeline-action@v1.1.0
-              needs: update-release-draft
               env:
                 CCI_TOKEN: ${{ secrets.CCI_TOKEN }}
