@@ -21,6 +21,12 @@ jobs:
                   commitish: main
                   prerelease: false
                   publish: true
-                #   disable-autolabeler: true #My bad, was not necessary
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            - name: Release
+              id: release
+              uses: CircleCI-Public/trigger-circleci-pipeline-action@v1.1.0
+              with:
+                  GHA_Meta: 'final-release'
+              env:
+                  CCI_TOKEN: ${{ secrets.CCI_TOKEN }}
