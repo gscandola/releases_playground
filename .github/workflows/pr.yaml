@@ -7,10 +7,10 @@ on:
         types: [opened, synchronize]
 jobs:
     trigger-circleci:
+      - name: Triggler CircleCI pipeline for Pull Request
         runs-on: ubuntu-latest
         steps:
-            - name: PullRequest
-              id: pr
+            - id: pr
               uses: CircleCI-Public/trigger-circleci-pipeline-action@v1.1.0
               env:
                   CCI_TOKEN: ${{ secrets.CCI_TOKEN }}

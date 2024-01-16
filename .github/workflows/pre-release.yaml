@@ -8,11 +8,11 @@ on:
         types: [published]
 jobs:
     trigger-circleci:
+      - name: Triggler CircleCI pipeline for Pre-Release
         if: "github.event.release.prerelease"
         runs-on: ubuntu-latest
         steps:
-            - name: Release
-              id: release
+            - id: pre-release
               uses: CircleCI-Public/trigger-circleci-pipeline-action@v1.1.0
               with:
                   GHA_Meta: 'pre-release'

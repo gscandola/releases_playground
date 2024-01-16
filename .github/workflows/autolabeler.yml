@@ -14,7 +14,8 @@ permissions:
     contents: read
 
 jobs:
-    update_release_draft:
+    assign-labels:
+      - name: Assign labels on PR
         permissions:
             contents: write
             pull-requests: write
