@@ -20,6 +20,7 @@ jobs:
               with:
                   commitish: main
                   prerelease: false
+                  publish: true
                 #   disable-autolabeler: true #My bad, was not necessary
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
