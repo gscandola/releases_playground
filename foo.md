@@ -1,3 +1,3 @@
 # Dummy title
 
-Simple foo doc
+Simple foo (🤪) doc
