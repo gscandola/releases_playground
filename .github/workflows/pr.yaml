@@ -7,7 +7,7 @@ on:
         types: [opened, synchronize]
 jobs:
     trigger-circleci:
-      - name: Triggler CircleCI pipeline for Pull Request
+        name: Triggler CircleCI pipeline for Pull Request
         runs-on: ubuntu-latest
         steps:
             - id: pr

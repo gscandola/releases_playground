@@ -12,26 +12,27 @@ permissions:
 
 jobs:
     update-release-draft:
-      - name: Create & publish Release
+        name: Create & publish Release
         permissions:
             contents: write
             pull-requests: write
         runs-on: ubuntu-latest
         steps:
-            - uses: release-drafter/release-drafter@v5
-              with:
-                  commitish: main
-                  prerelease: false
-                  publish: true
-              env:
-                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            uses: release-drafter/release-drafter@v5
+            with:
+                commitish: main
+                prerelease: false
+                publish: true
+            env:
+                GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     trigger-circleci:
-      - name: Trigger CircleCI for Release
+        name: Trigger CircleCI for Release
         runs-on: ubuntu-latest
-            - id: release
-              uses: CircleCI-Public/trigger-circleci-pipeline-action@v1.1.0
-              need: update-release-draft
-              with:
-                  GHA_Meta: 'final-release'
-              env:
-                  CCI_TOKEN: ${{ secrets.CCI_TOKEN }}
+        steps:
+            id: release
+            uses: CircleCI-Public/trigger-circleci-pipeline-action@v1.1.0
+            need: update-release-draft
+            with:
+                GHA_Meta: 'final-release'
+            env:
+                CCI_TOKEN: ${{ secrets.CCI_TOKEN }}
