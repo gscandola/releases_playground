@@ -26,19 +26,6 @@ tagged: &tagged
 
 # --------------- Commands ---------------
 commands:
-    install_pnpm:
-        description: 'Setup pnpm based on engine'
-        steps:
-            - run:
-                name: Setup pnpm
-                command: |
-                    # Circle CI run these command from root directory of the project
-                    # Use node to extract packageManager indicated in package.json
-                    PKG_MANAGER="$(node -p "require('./package.json').packageManager")"
-
-                    # Globally install the right package manager version
-                    npm install -g "$PKG_MANAGER"
-
     install_dependencies:
         description: 'Dependencies installation'
         steps:
@@ -50,7 +37,7 @@ commands:
         description: 'Setup project'
         steps:
             - checkout
-            - install_pnpm
+            # No need to install pnpm, cimg/node:lts already bring it
             - install_dependencies
 
     build:
@@ -80,6 +67,7 @@ jobs:
         docker: *default_docker
         resource_class: small
         steps:
+            - setup
             - run:
                   name: Run tests
                   command: echo "Tests succeed"
