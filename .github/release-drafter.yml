@@ -42,9 +42,9 @@ autolabeler:
     - label: 'chore'
       branch:
           - '/^chore[^/]*\/.+/'
-    # - label: 'ci'
-    #   branch:
-    #       - '/^ci[^/]*\/.+/'
+    - label: 'ci'
+      branch:
+          - '/^ci[^/]*\/.+/'
     - label: 'fix'
       branch:
           - '/^fix[^/]*\/.+/'
@@ -54,9 +54,9 @@ autolabeler:
     - label: 'minor'
       branch:
           - '/^feat[^/]*\/.+/'
-    # - label: 'refactor'
-    #   branch:
-    #       - '/^refactor[^/]*\/.+/'
-    # - label: 'documentation'
-    #   branch:
-    #       - '/^doc[^/]*\/.+/'
+    - label: 'refactor'
+      branch:
+          - '/^refactor[^/]*\/.+/'
+    - label: 'documentation'
+      branch:
+          - '/^doc[^/]*\/.+/'
