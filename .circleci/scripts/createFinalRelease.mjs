@@ -1,14 +1,15 @@
 import { Octokit } from "octokit";
 
-const repo = "releases_playground";
-const owner = "gscandola";
-
 const octokit = new Octokit({
   auth: process.env.GITHUB_TOKEN,
 });
 
-const repoInfos = { repo, owner };
+const repoInfos = {
+  repo: process.env.CIRCLE_PROJECT_REPONAME,
+  owner: process.env.CIRCLE_PROJECT_USERNAME,
+};
 
+// Retrieve all the repository releases
 console.log("Fetching all releases of the repository...");
 const data = await octokit.paginate(
   octokit.rest.repos.listReleases.endpoint.merge({
@@ -16,6 +17,9 @@ const data = await octokit.paginate(
     per_page: 100,
   })
 );
+console.log(`${data.length} release(s) retrieved.`);
+
+// Look for drafts releases
 const drafts = data.filter((release) => release.draft);
 
 // Abort final release if draft releases found
@@ -31,25 +35,27 @@ if (drafts.length) {
   process.exit(1);
 }
 
+// Looking for pre-releases
 const preReleases = data.filter((release) => release.prerelease);
 
-console.log(`${preReleases.length} pre-release(s) found, removing them...`);
+console.log(`${preReleases.length} pre-release(s) found, removing...`);
+// Wait for all async removal process to end
 await Promise.all(
   preReleases.map(async (preRelease) => {
+    // Remove the release from Github
     await octokit.rest.repos.deleteRelease({
       ...repoInfos,
       release_id: preRelease.id,
     });
+    // Delete the tag from git
     await octokit.rest.git.deleteRef({
       ...repoInfos,
       ref: `tags/${preRelease.tag_name}`,
     });
-    console.log(`${preRelease.tag_name} release & tag deleted`);
+    console.log(`- ${preRelease.tag_name}: Github release & Git tag deleted`);
   })
 );
 console.log("Pre-release(s) deleted.");
-
-preReleases.forEach(async (preRelease) => {});
 
 console.log("Dispatching repository event to trigger final release...");
 await octokit.rest.repos.createDispatchEvent({

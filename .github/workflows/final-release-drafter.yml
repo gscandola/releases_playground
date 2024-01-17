@@ -1,4 +1,4 @@
-# This action runs when a Repository Dispatch is detected (trigger FROM CircleCI)
+# This action runs when a Repository Dispatch is detected (triggered FROM CircleCI)
 # Goal is to run release-drafter action to create a RELEASE (a final one)
 # And run the CircleCI pipeline de build & deploy in live the RELEASE
 name: ReleaseDrafter/Release
@@ -21,11 +21,14 @@ jobs:
             - uses: release-drafter/release-drafter@v5
               with:
                 commitish: main
+                # Create a final release
                 prerelease: false
+                # Do not put it in draft, publish it directly
                 publish: true
               env:
                 GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     trigger-circleci:
+        # Important: Release must be created prior running this action
         needs: update-release-draft
         name: Trigger CircleCI for Release
         runs-on: ubuntu-latest
