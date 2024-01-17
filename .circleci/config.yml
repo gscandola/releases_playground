@@ -135,11 +135,17 @@ workflows:
                   <<: *tagged
                   requires:
                       - request-qa-approval
-    build_deploy_live:
+    build_deploy_preview_and_live:
         when:
             and:
                 - equal: ['release', << pipeline.parameters.GHA_Action >>]
         jobs:
+            - build-preview:
+                  <<: *tagged
+            - deploy-preview:
+                  <<: *tagged
+                  requires:
+                      - build-preview
             - build-live:
                   <<: *tagged
             - deploy-live:
