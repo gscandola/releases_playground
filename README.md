@@ -63,3 +63,13 @@ BUT... since the process triggered when pre-release is approved is to delete all
 It may be confusing since QA was testing for a `v1.0.1-pre.1` version before the final release was generated.
 
 It may be acceptable since it happen on rare case: only when a race condition occurs (#communicationTeam)
+
+## Discarded pre-release content
+
+When the final release is created through ReleaseDrafter there is a process which clean the previous pre-release.
+
+Thus if you made some modification in the body/content of the release: it will be lost.
+
+If the generated body of the final release does not suite your needs: you have to update it even if it was already releases.
+
+Idea: Should we create the final release in "Draft" mode (but this required an additionnal click...)
