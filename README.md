@@ -36,7 +36,7 @@ How release process works when a PR got merged while the CI was awaiting the app
 
 ![feature](./assets/workflow_pre-release-race%20condition.png)
 
-## Know caveat
+## Known caveats
 
 ### Release content from previous pre-releases
 
@@ -73,3 +73,9 @@ Thus if you made some modification in the body/content of the release: it will b
 If the generated body of the final release does not suite your needs: you have to update it even if it was already releases.
 
 Idea: Should we create the final release in "Draft" mode (but this required an additionnal click...)
+
+## Ideas
+
+Use of https://docs.github.com/en/rest/branches/branch-protection?apiVersion=2022-11-28 to "lock" main branch while deploy is in progress ?
+
+How to unlock it automatically if approval is not given ?
