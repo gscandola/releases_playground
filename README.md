@@ -79,3 +79,9 @@ Idea: Should we create the final release in "Draft" mode (but this required an a
 Use of https://docs.github.com/en/rest/branches/branch-protection?apiVersion=2022-11-28 to "lock" main branch while deploy is in progress ?
 
 How to unlock it automatically if approval is not given ?
+
+## Various notes
+
+I had to put this repository Public (or get a pro account) to run the "lock main branch" action.
+
+I had to update Settings > Actions > General > "Workflow permissions" > Set to "Read and write permission" otherwise the action threw a Resource not accessible by integration
