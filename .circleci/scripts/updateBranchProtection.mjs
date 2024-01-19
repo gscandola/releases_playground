@@ -6,27 +6,15 @@ const argv = yargs(hideBin(process.argv))
   .options({
     l: {
       alias: "lock",
-      description: "Lock the main branch of the repository",
-      type: "boolean",
+      description:
+        "Lock (on) or unlock (off) the main branch of the repository",
+      choices: ["on", "off"],
+      required: true,
     },
-    u: {
-      alias: "unlock",
-      description: "Unlock the main branch of the repository",
-      type: "boolean",
-    },
-  })
-  .check((argv) => {
-    if (!("l" in argv) && !("u" in argv)) {
-      throw new Error("You must provide either `-l` or `-u` option");
-    }
-
-    if ("l" in argv && "u" in argv) {
-      throw new Error("You cannot provide both `-l` and `-u` options");
-    }
-
-    return true;
   })
   .parse();
+
+const lockBranch = argv.lock === "on";
 
 const octokit = new Octokit({
   auth: process.env.GITHUB_TOKEN,
@@ -78,12 +66,12 @@ const parameters = {
   allow_deletions,
   block_creations,
   required_conversation_resolution,
-  lock_branch: !!argv.l,
+  lock_branch: lockBranch,
   allow_fork_syncing,
 };
 
 console.log(
-  `Updating branch protection to ${argv.l ? "lock" : "unlock"} the branch...`
+  `Updating branch protection to ${lockBranch ? "lock" : "unlock"} the branch...`
 );
 octokit.rest.repos.updateBranchProtection({
   ...branchPayload,

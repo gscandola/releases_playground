@@ -106,7 +106,7 @@ jobs:
             - run:
                   name: Lock main branch to protect against merge during release
                   command: |
-                    node ./.circleci/scripts/updateBranchProtection.mjs -l
+                    node ./.circleci/scripts/updateBranchProtection.mjs -l on
 
     unlock-main-branch:
         docker: *default_docker
@@ -116,7 +116,7 @@ jobs:
             - run:
                   name: Unlock main branch
                   command: |
-                    node ./.circleci/scripts/updateBranchProtection.mjs -u
+                    node ./.circleci/scripts/updateBranchProtection.mjs -l off
 
     trigger-final-release:
         docker: *default_docker
