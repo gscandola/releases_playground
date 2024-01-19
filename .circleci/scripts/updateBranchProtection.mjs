@@ -42,9 +42,9 @@ const branchPayload = {
   branch: "main",
 };
 
-console.log('Fetching current branch protection....')
+console.log("Fetching current branch protection...");
 const { data } = await octokit.rest.repos.getBranchProtection(branchPayload);
-console.log('Current branch protection fetched.')
+console.log("Current branch protection fetched.");
 
 const {
   // omit url, contexts_url and contexts (deprecated)
@@ -78,14 +78,15 @@ const parameters = {
   allow_deletions,
   block_creations,
   required_conversation_resolution,
-  lock_branch: argv.l,
+  lock_branch: !!argv.l,
   allow_fork_syncing,
 };
 
-console.log(`Updating branch protection to ${argv.l ? 'lock' : 'unlock'} the branch...`)
+console.log(
+  `Updating branch protection to ${argv.l ? "lock" : "unlock"} the branch...`
+);
 octokit.rest.repos.updateBranchProtection({
   ...branchPayload,
   ...parameters,
 });
-console.log('Update done.')
-
+console.log("Update done.");
