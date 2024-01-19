@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "octokit": "3.1.2"
+    "octokit": "3.1.2",
+    "yargs": "17.7.2"
   }
 }

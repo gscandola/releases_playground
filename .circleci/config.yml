@@ -98,6 +98,26 @@ jobs:
             - deploy:
                 target_env: 'live'
 
+    lock-main-branch:
+        docker: *default_docker
+        resource_class: small
+        steps:
+            - setup
+            - run:
+                  name: Lock main branch to protect against merge during release
+                  command: |
+                    node ./.circleci/scripts/updateBranchProtection.mjs -l
+
+    unlock-main-branch:
+        docker: *default_docker
+        resource_class: small
+        steps:
+            - setup
+            - run:
+                  name: Unlock main branch
+                  command: |
+                    node ./.circleci/scripts/updateBranchProtection.mjs -u
+
     trigger-final-release:
         docker: *default_docker
         resource_class: small
@@ -120,8 +140,12 @@ workflows:
             and:
                 - equal: ['pre-release', << pipeline.parameters.GHA_Action >>]
         jobs:
+            - lock-main-branch:
+                  <<: *tagged
             - build-preview:
                   <<: *tagged
+                  requires:
+                      - lock-main-branch
             - deploy-preview:
                   <<: *tagged
                   requires:
@@ -152,4 +176,9 @@ workflows:
                   <<: *tagged
                   requires:
                       - build-live
+            - unlock-main-branch:
+                  <<: *tagged
+                  requires:
+                      - deploy-preview
+                      - deploy-live
 

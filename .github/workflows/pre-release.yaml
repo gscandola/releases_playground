@@ -1,6 +1,6 @@
-# This action runs when a a pre-release is published from Github
-# since stable release are generated through github action this action should never be triggered too
-# BUT this action is filtered to only handle "prerelease" to prevent any misusage
+# This action runs when a a pre-release is published from Github.
+# Since stable release is created through github action this action should never be triggered manually by a stable release.
+# BUT "in case of", this action is filtered to only handle "prerelease" event to prevent any misusage.
 # Goal is to trigger CircleCI pipeline to build & deploy on PREVIEW
 name: CircleCITrigger/PreRelease
 
@@ -8,23 +8,7 @@ on:
     release:
         types: [published]
 jobs:
-    lock-main-branch:
-        name: Lock the main branch to prevent merge during release
-        runs-on: ubuntu-latest
-        permissions: write-all
-        steps:
-            - id: lock-main-branch
-              uses: octokit/request-action@v2.x
-              with:
-                route: PUT /repos/{owner}/{repo}/branches/{branch}/protection
-                owner: gscandola
-                repo: releases_playground
-                branch: main
-                lock_branch: true
-              env:
-                GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     trigger-circleci:
-        needs: lock-main-branch
         name: Triggler CircleCI pipeline for Pre-Release
         if: "github.event.release.prerelease"
         runs-on: ubuntu-latest

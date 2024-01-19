@@ -82,6 +82,10 @@ How to unlock it automatically if approval is not given ?
 
 ## Various notes
 
-I had to put this repository Public (or get a pro account) to run the "lock main branch" action.
+To deal with "branch protection" rule through github rest API repository MUST be public OR be part of a Pro account.
 
-I had to update Settings > Actions > General > "Workflow permissions" > Set to "Read and write permission" otherwise the action threw a Resource not accessible by integration
+Note: Trying to do it through CircleCI
+
+-> bot user have to be admin of the repository
+
+~~I had to update Settings > Actions > General > "Workflow permissions" > Set to "Read and write permission" otherwise the action threw a Resource not accessible by integration~~
