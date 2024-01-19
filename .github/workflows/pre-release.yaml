@@ -11,6 +11,7 @@ jobs:
     lock-main-branch:
         name: Lock the main branch to prevent merge during release
         runs-on: ubuntu-latest
+        permissions: write-all
         steps:
             - id: lock-main-branch
               uses: octokit/request-action@v2.x
