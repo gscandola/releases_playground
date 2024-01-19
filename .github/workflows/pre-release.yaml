@@ -8,23 +8,24 @@ on:
     release:
         types: [published]
 jobs:
-    lock-main-branch:
-        name: Lock the main branch to prevent merge during release
-        runs-on: ubuntu-latest
-        permissions: write-all
-        steps:
-            - id: lock-main-branch
-              uses: octokit/request-action@v2.x
-              with:
-                route: PUT /repos/{owner}/{repo}/branches/{branch}/protection
-                owner: gscandola
-                repo: releases_playground
-                branch: main
-                lock_branch: true
-              env:
-                GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    # Seems not possible through this github action
+    # lock-main-branch:
+    #     name: Lock the main branch to prevent merge during release
+    #     runs-on: ubuntu-latest
+    #     permissions: write-all
+    #     steps:
+    #         - id: lock-main-branch
+    #           uses: octokit/request-action@v2.x
+    #           with:
+    #             route: PUT /repos/{owner}/{repo}/branches/{branch}/protection
+    #             owner: gscandola
+    #             repo: releases_playground
+    #             branch: main
+    #             lock_branch: true
+    #           env:
+    #             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     trigger-circleci:
-        needs: lock-main-branch
+        # needs: lock-main-branch
         name: Triggler CircleCI pipeline for Pre-Release
         if: "github.event.release.prerelease"
         runs-on: ubuntu-latest
