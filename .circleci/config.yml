@@ -140,18 +140,23 @@ workflows:
             and:
                 - equal: ['pre-release', << pipeline.parameters.GHA_Action >>]
         jobs:
-            - lock-main-branch
+            - lock-main-branch:
+                  <<: *tagged
             - build-preview:
+                  <<: *tagged
                   requires:
                       - lock-main-branch
             - deploy-preview:
+                  <<: *tagged
                   requires:
                       - build-preview
             - request-qa-approval:
                   type: approval
+                  <<: *tagged
                   requires:
                       - deploy-preview
             - trigger-final-release:
+                  <<: *tagged
                   requires:
                       - request-qa-approval
     build_deploy_preview_and_live:
