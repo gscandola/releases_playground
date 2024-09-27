@@ -35,8 +35,20 @@ commands:
 
     setup:
         description: 'Setup project'
+        parameters:
+            tagVersion:
+                default: ''
+                type: string
         steps:
             - checkout
+            - when:
+                # https://circleci.com/docs/configuration-reference/#logic-statements
+                # empty string is considered as falsy
+                condition: << parameters.tagVersion >>
+                steps:
+                    - run:
+                          name: 'Checkout to << parameters.tagVersion >>'
+                          command: git checkout << parameters.tagVersion >>
             # No need to install pnpm, cimg/node:lts already bring it
             - install_dependencies
 
@@ -45,7 +57,12 @@ commands:
         parameters:
             target_env:
                 type: string
+            tagVersion:
+                default: ''
+                type: string
         steps:
+            - setup:
+                tagVersion: << parameters.tagVersion >>
             - run:
                   name: Build
                   command: |
@@ -73,8 +90,13 @@ jobs:
     build-preview:
         docker: *default_docker
         resource_class: small
+        parameters:
+            tagVersion:
+                default: ''
+                type: string
         steps:
             - build:
+                tagVersion: << parameters.tagVersion >>
                 target_env: 'preview'
 
     deploy-preview:
@@ -87,8 +109,13 @@ jobs:
     build-live:
         docker: *default_docker
         resource_class: small
+        parameters:
+            tagVersion:
+                default: ''
+                type: string
         steps:
             - build:
+                tagVersion: << parameters.tagVersion >>
                 target_env: 'live'
 
     deploy-live:
@@ -165,19 +192,21 @@ workflows:
                 - equal: ['release', << pipeline.parameters.GHA_Action >>]
         jobs:
             - build-preview:
-                  <<: *tagged
+                #   <<: *tagged
+                  tagVersion: << pipeline.parameters.GHA_Meta >>
             - deploy-preview:
-                  <<: *tagged
+                #   <<: *tagged
                   requires:
                       - build-preview
             - build-live:
-                  <<: *tagged
+                #   <<: *tagged
+                  tagVersion: << pipeline.parameters.GHA_Meta >>
             - deploy-live:
-                  <<: *tagged
+                #   <<: *tagged
                   requires:
                       - build-live
             - unlock-main-branch:
-                  <<: *tagged
+                #   <<: *tagged
                   requires:
                       - deploy-preview
                       - deploy-live
