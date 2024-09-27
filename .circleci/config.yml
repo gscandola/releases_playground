@@ -191,16 +191,16 @@ workflows:
             and:
                 - equal: ['release', << pipeline.parameters.GHA_Action >>]
         jobs:
-            - build-preview:
+            - build-preview
                 #   <<: *tagged
-                  tagVersion: << pipeline.parameters.GHA_Meta >>
+                #   tagVersion: << pipeline.parameters.GHA_Meta >>
             - deploy-preview:
                 #   <<: *tagged
                   requires:
                       - build-preview
-            - build-live:
+            - build-live
                 #   <<: *tagged
-                  tagVersion: << pipeline.parameters.GHA_Meta >>
+                #   tagVersion: << pipeline.parameters.GHA_Meta >>
             - deploy-live:
                 #   <<: *tagged
                   requires:
